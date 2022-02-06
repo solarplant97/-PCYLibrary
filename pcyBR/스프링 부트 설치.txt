@@ -1,0 +1,37 @@
+https://spring.io/tools 접속
+
+툴 다운로드
+
+압축해제
+
+contents 압축해제
+
+c에 폴더생성
+
+폴더에 압출해제한 sts 넣기
+
+폴더에 workspace 생성
+
+help -> marketplace ->java and web 검색 -> eclipse enterprise java and web develpoer 설치
+
+window -> preferences -> General -> content types -> text -> java properties file -> defualt encoding : UTF-8
+				-> workspace -> other : utf -8
+				-> Appearance -> coloers and fonts -> basic -> textfont -> edit -> 원하는 글꼴
+			->web -> css Files -> encoding : utf-8
+				-> html -> encoding : utf-8
+				-> jsp files -> encoding : utf-8
+			->run/debug -> console -> Limit console output 체크해제
+
+프로젝트 생성
+
+Spring Boot DevTools ->브라우저로 전송되는 내용들에 대한 코드가 변경되면, 
+			자동으로 어플리케이션을 재시작하여 
+			브라우저에도 업데이트를 해주는 역할을 한다.
+Lombok -> 롬복(Lombok)은 자바 클래스를 만들때 자주 사용되는
+		 getter/setter나 toString 등의 코드를 애너테이션으로 대체해서 선언하고
+		 java 코드를 컴파일 할 때 그에 맞는 코드를 생성해주는 것이다.
+
+oracle driver -> 오라클 설치
+thymeleaf -> 타임리프의 주 목표는 유지관리가 쉬운 템플릿 생성 방법을 제공하는 것이며, 실제로 템플릿에 영향을 주지 않는
+		(HTML의 구조를 깨지 않는, 기존 HTML 코드를 변경하지 않고 덧붙이는 코드) 방식을 사용한다.
+spring web -> 웹사용할때 있어야지

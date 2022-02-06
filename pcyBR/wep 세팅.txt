@@ -1,0 +1,20 @@
+https://tomcat.apache.org/
+-> download ->  core : 64bit window
+https://www.eclipse.org/
+-> download -> download package ->Eclipse IDE for Enterprise Java and Web Developers
+
+c드라이브 -> webproject 폴더 생성 -> 폴더 안에 workspace 폴더,다운받은 두파일 압축해제
+
+ecli 세팅 window -> preferences -> workspaec -> encodig: utf-8
+			-> appearance -> colors and fonts -> structured text editors 글자크기 16
+		web browser ->  external wep browser
+		web -> css file -> encodig: utf-8
+			html //
+			jsp files //
+		surver ->  runtime environmen -> add -> 설치한 아파치 버전 누르고 next -> 아파치 폴더위치 선택
+
+오라클 jar 가져오기
+	오라클 설치 폴더 app -> mar ->product ->18.0.0 ->dbhomeXE ->jdbc -> lib -> ojdbc버전 선택
+	webapp -> web-inf -> lib폴더에 넣고 우클릭 빌드패스 -> 컨피그 빌드패스
+	libraries -> classpath 누르고 add jars -> jar있는 폴더들어가서 jar 선택후 apply
+	

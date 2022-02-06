@@ -1,0 +1,37 @@
+context.xml
+<Manager pathname="" /> -> 서버가 종료될때 세션 초기화
+
+Controller
+
+private HttpSession session; // 세션 선언
+private String userId; // 체크할 아이디 선언
+
+Model model, HttpServletRequest request, HttpServletResponse response)throws Exception{
+sessionCheck(request, response, "잘못된 접근입니다.", model); // 세션체크라는 메서드를 만들어 사용
+}
+// 메서드에 3가지 값을 필수로 받고 예외처리를 해줘야함
+
+private void sessionCheck(HttpServletRequest request, HttpServletResponse response, String message, Model model) throws Exception {
+  		session = request.getSession();
+  		userId = (String) session.getAttribute("userId");
+
+	    if(userId == null){
+	    	response.setContentType("text/html; charset=euc-kr");
+	    	PrintWriter out = response.getWriter();
+	    	out.println("<script type='text/javascript'>");
+	    	out.println("alert('"+ message + "');");
+	    	out.println("location.href='/client/login/login'");
+	    	out.println("</script>");
+	    	out.flush();
+	    }else if(!userId.equals("admin")){
+	    	response.setContentType("text/html; charset=euc-kr");
+	    	PrintWriter out = response.getWriter();
+	    	out.println("<script type='text/javascript'>");
+	    	out.println("alert('"+ message + "');");
+	    	out.println("location.href='/client/login/login'");
+	    	out.println("</script>");
+	    	out.flush();
+	    }else {
+	    	model.addAttribute("userId", userId);
+	    }
+  	}

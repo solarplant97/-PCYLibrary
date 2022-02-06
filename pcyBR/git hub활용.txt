@@ -1,0 +1,29 @@
+git 설치
+windows powershell 실행
+
+업로드 명령어 순서
+1. cd 자신이 넣으려고 하는 파일들이 있는 폴더위치
+2. git init -> 해당 위치 git 명령어 사용 선언
+3. git remote add main 깃주소 -> 깃허브로 올릴떄 폴더 이름 생성
+6. git add -A -> 폴더위치에 모든 파일을 업로드함
+7. commit -m "자신이 원하는 커밋메세지"
+//4. git branch branch명 -> 해당명으로 변경
+//5. git checkout branch명 -> 해당명으로 작업장소 변경
+8. git push branch명 -> 해당 작업장소로 모두 업로드
+
+cd.. 명령어로 c폴더로 이동
+mkdir 만들폴더명 -> 폴더생성
+cd 만든폴더명 -> 만든폴더로 이동
+git clone (포크해서 생긴 내 프로젝트 주소) -> 푸쉬하기전에 먼저 프로젝트를 불러옴
+git remote add main (포크해서 생긴 내 프로젝트 주소) -> main이라는 별명으로 올릴때 폴더 이름 생성
+git add -A ->모두 업로드한다
+git status ->변경된 정보를 확인
+git commit -m "올릴때 메세지" -> 커밋을 하면서 올라갈 메세지
+git push main ->아까 만든 main이라는 별명을 깃허브에 올린다.
+
+이후 작업할때는 git clone이 아니라 git pull (포크해서 생긴 내 프로젝트 주소)로 업데이트
+
+
+git log // 삭제할 commit을 확인
+git reset HEAD^ // 가장 마지막에 commit을 삭제
+git push -f origin 브랜치명 // 서버에 push를 한경우 커밋을 삭제했다는걸 서버에 알려줌

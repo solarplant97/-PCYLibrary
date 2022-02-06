@@ -1,0 +1,236 @@
+Pagination
+
+package com.puppy.common.vo;
+
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+public class Pagination {
+	
+	private int totalCount;	//전체 게시글 수
+	private int startPage;	//시작 페이지
+	private int endPage;	//끝 페이지
+	private boolean prev;	//이전글 목록
+	private boolean next;	//다음글 목록
+	private int displayPageNum = 10;	// 한 페이지에 보여지는 게시글 수
+	private PageRequest pageRequest;
+	
+	public void setPageRequest(PageRequest pageRequest) {
+		this.pageRequest = pageRequest;
+	}
+	
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+		
+		calcData();
+	}
+	
+	
+	
+	private void calcData() {
+		endPage = (int)(Math.ceil(pageRequest.getPage() / (double)
+displayPageNum) * displayPageNum);
+		startPage = (endPage - displayPageNum) + 1;
+		
+		int tempEndPage = (int)(Math.ceil(totalCount / (double)
+pageRequest.getSizePerPage()));
+		
+		if(endPage > tempEndPage) {
+			endPage = tempEndPage;
+		}
+		
+		prev = startPage == 1 ? false : true;
+		next = endPage * pageRequest.getSizePerPage() >= totalCount ?
+	false : true;
+		
+	}
+	
+	public int getTotalCount() {
+		return totalCount;
+	}
+	
+	public int getStartPage() {
+		return startPage;
+	}
+	
+	public int getEndPage() {
+		return endPage;
+	}
+	
+	public boolean isPrev() {
+		return prev;
+	}
+	
+	public boolean isNext() {
+		return next;
+	}
+	
+	public int getDisplayPageNum() {
+		return displayPageNum;
+	}
+	
+	public PageRequest getPageRequest() {
+		return pageRequest;
+	}
+	
+	public String makeQuery(int page) {
+		UriComponents uriComponents = 
+UriComponentsBuilder.newInstance().queryParam("page", page)
+		.queryParam("perPageNum", pageRequest.getSizePerPage()).build();
+		
+		return uriComponents.toUriString();
+	}
+
+}
+
+
+
+PageRequest
+
+package com.puppy.common.vo;
+
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
+public class PageRequest {
+
+	private int page;
+	private int sizePerPage;
+	
+	public PageRequest() {
+		this.page = 1;
+		this.sizePerPage = 10;
+	}
+	
+	public void setPage(int page) {
+		if(page <= 0) {
+			this.page = 1;
+			return;
+		}
+		this.page = page;
+	}
+	public void setSizePerPage(int size) {
+		if(size <= 0 || size > 100) {
+			this.sizePerPage =10;
+			return;
+		}
+		this.sizePerPage = size;
+	}
+	public int getPage() {
+		return page;
+	}
+	//마이바티스 SQL 매퍼를 위한 메서드
+	public int getPageStart() {
+		return (this.page - 1) * sizePerPage;
+	}
+	//마이바티스 SQL 매퍼를 위한 메서드
+	public int getSizePerPage() {
+		return this.sizePerPage;
+	}
+	
+	//멤버 변수를 활용하여 다양한 형태의 쿼리파라미터를 생성한다.
+	public String toUriString() {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+				.queryParam("page", this.page)
+				.queryParam("size", this.sizePerPage)
+				.build();
+		return uriComponents.toUriString();
+	}	
+	
+	public String toUriString(int page) {
+		UriComponents uriComponents = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("size",this.sizePerPage)
+				.build();
+				
+		return uriComponents.toUriString();
+		
+	}
+
+}
+
+
+컨트롤러
+
+	@RequestMapping("/adminMemberList") // 부가서비스 리스트
+	public ModelAndView adminMemberList(@ModelAttribute("pgrq") PageRequest pageRequest ,Model model, HttpServletRequest request, HttpServletResponse response)throws Exception {
+		sessionCheck(request, response, "잘못된 접근입니다.", model);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("adminMemberList", adminMemberService.adminMemberList(pageRequest));
+		mav.setViewName(CONTEXT_PATH + "/adminMemberList");
+		
+		//페이징 네비게이션 정보를 뷰에 전달한다.
+				Pagination pagination = new Pagination();
+				pagination.setPageRequest(pageRequest);
+				pagination.setTotalCount(adminMemberService.count());
+				model.addAttribute("pagination", pagination);
+
+		return mav;
+	}
+
+
+서비스
+
+	@Override
+	public List<MemberVO> adminMemberList(PageRequest pageRequest) {
+		List<MemberVO> list = new ArrayList<MemberVO>();
+		list = adminMemberDAO.adminMemberList(pageRequest);
+		return list;
+	}
+
+	@Override
+	public int count() {
+		// TODO Auto-generated method stub
+		return adminMemberDAO.count();
+	}
+
+dao
+
+@Override
+	public List<MemberVO> adminMemberList(PageRequest pageRequest) {
+		// TODO Auto-generated method stub
+		return SqlSession.selectList(namespace+".adminMemberList",pageRequest);
+	}
+
+	@Override
+	public int count() {
+		// TODO Auto-generated method stub
+		return (Integer)SqlSession.selectOne(namespace + ".adminMemberCnt");
+	}
+
+xml
+
+		<select id="adminMemberList" resultType="member">
+		<![CDATA[ select m_id,m_name,m_birth,m_email,m_phone,m_address ,m_status 
+		from (select m_id,m_name,m_birth,m_email,m_phone,m_address ,m_status,rownum as rnum 
+		from Member_tbl where m_status = 'active')
+		where rnum between #{sizePerPage}*#{page}-9 and #{sizePerPage}*#{page}]]>
+	</select>
+
+	<!-- 게시글 전체 건수를 조회한다. -->
+	<select id="adminMemberCnt" resultType="int">
+		<![CDATA[
+		SELECT count(m_id)
+		  FROM Member_tbl
+		 WHERE m_id > 0
+		]]>
+	</select>
+
+
+jsp
+
+		<!-- 페이징 네비게이션 -->
+<ul class="pagination justify-content">
+	<c:if test="${pagination.prev}">
+		<li class="page-item"><a class="page-link" href="${pagination.startPage - 1}">&laquo;</a></li>
+	</c:if>
+	
+	<c:forEach begin="${pagination.startPage }" end="${pagination.endPage }"
+var="idx">
+	<li class="page-item"><a class="page-link" href="/admin/member/adminMemberList${pagination.makeQuery(idx)}">${idx}</a></li>
+	</c:forEach>
+	<c:if test="${pagination.next && pagination.endPage > 0}">
+		<li class="page-item"><a class="page-link" href="${pagination.endPage +1}">&raquo;</a></li>
+	</c:if>
+</ul>

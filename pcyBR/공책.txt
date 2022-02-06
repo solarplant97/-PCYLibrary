@@ -1,0 +1,877 @@
+2946
+1111
+192.168.0.43
+오라클 포트번호 1521
+mysql 포트번호3306
+
+sql plus접속
+비밀번호 1234로 변경법
+sys as sysdba / 1234 로 접속
+alter user 변경할아이디 identified by 1234;
+확인 방법
+conn 변경할아이디/1234
+
+DDL -> 데이터 정의어
+CREATE = 데이터베이스 객체를 생성
+ALTER = 생성된 데이터베이스 객체를 수정
+TRUNCATE = 테이블의 데이터를 모두 삭제
+DROP = 생성된 데이터베이스 객체를 영구히 삭제
+
+DML -> 데이터 조작어
+SELECT = 테이블이나 뷰에 있는 테이터를 조회
+INSERT =  새로운 데이터를 추가
+UPDATE = 테이블에서 기존의 데이터를 변경
+DELETE = 테이블에 저장된 데이터를 삭제
+
+TCL -> 트랜잭션 처리어
+COMMIT = 변경된 내용을 영구히 저장
+ROLLBACK = 변경된 데이터를 적용하지 않고 이전 상태로 되돌림
+SAVEPOINT = 특정 위치까지를 영구히 저장 혹은 되돌릴 수 있는 저장점을 만듬
+
+DCL -> 데이터 제어어
+GRANT = 사용자에게 작업을 혀용하는 특정 권한을 부여
+REVOKE = 사용자로부터 특정 권한을 제거
+
+select *
+from 테이블명 ;  / 테이블의 칼럼의 행을 모두 출력
+
+select 칼럼명
+from 테이블명; /테이블의 칼럼행을 출력
+
+select 칼럼명 as 별칭
+from 테이블명; /테이블의 칼럼행을 별칭으로 출력
+
+where => 조건식
+
+between 1 and 3 => 1과 3 사이의 수
+
+select distinct 칼럼명 => 중복을 제외한 칼럼행 출력
+
+select *
+from 테이블명
+order by 칼럼명  => 칼럼명을 기준으로 내림차순으로 정렬
+
+칼럼명 desc => 칼럼명 기준으로 내림차순
+칼럼명 asc => 칼럼명 기준으로 오름차순
+
+where 칼럼명 in ( , , ) => 칼럼안에 in안에 변수가 있는 것만
+
+not => 아닌 것
+
+'%a' => 마지막 글자가 a로 끝나는 것
+'a%' => 첫번째 글자가 a로 끝나는 것
+'_a' => 두글자인 객체중 두번째가 a로 끝나는 것
+사용시 앞에 = 대신 like 사용
+
+is not null => 값이 null이 아니면
+it null => 값이 null 이면
+
+dual => 더미 테이블( 확인시 사용 )
+
+select 칼럼명, sum(더할칼럼)
+from 테이블명
+group by 칼럼명
+having 칼럼명 = 30; => 같은 그룹에서 칼럼이 30인 값을 합쳐서  출력
+
+select concat(칼럼명,칼럼명2) => 칼럼,칼럼2를 합쳐서 출력 // 두개 밖에 못쓰나 콘켓안에
+       			      콘켓을 사용해 추가 가능
+
+lower(칼럼명) => 칼럼행을 모두 소문자로 표기
+upper(칼럼명) => 칼럼행을 모두 대문자로 표기
+initcap(칼럼명) => 칼럼행을 첫글자만 대문자로 표기
+length(칼럼명) => 칼럼의 길이
+lengthb(칼럼명) => 칼럼의 메모리 바이트 수 
+substr(칼럼명, 1, 3) => 칼럼의 1번째 순서부터 문자열 3개 추출 / 음수는 뒤에서부터
+instr/instrb(대상,찾을 글자, 시작위치, 몇 번째 발견)
+lpad(칼럼명,출력글자수,넣을것) => 왼쪽에 위치번수에 지정한 것을 넣음
+rpad(칼럼명,출력글자수,넣을것) => 오른쪽에 위치번수에 지정한 것을 넣음
+trim(지울글자 from 컬럼명) => 컬럼명에서 지정한 첫 글자나 마지막 글자를 지움
+  L> leading = 왼쪽공백 trailing 오른쪽공백 both 양쪽공백 디폴트는 both
+
+abs => 절대값
+ceil => 소수점 아래를 올린다
+floor => 소수점 아래를 잘라낸다
+round(컬럼명,1) -> 반올림하여 소수점1자리수까지 표시
+ L> 소수점 자리수를 안적으면 소수점을 지우고 반올림 / 음수로 적으면 정수 부분에서 반올림
+trunc(칼럼명,2) -> 소수점2자리수까지 표시하고 뒤에 숫자에 0을 넣음
+mod(34,2) -> 34를 2로 나눈 나머지
+
+sysdate = 현재 날짜
+months_between(date1,date2) = 두 날짜 사이 간격
+add_months(date,number) = number 개월이 지난 날짜
+next_day(date,요일) = 해당 날짜에 가장 가까운 요일이 몇일인지 찾음
+round(data, format) = 날짜 반올림
+trunc(data, format) = 날짜 자르기
+to_char(data, '출력형식') = 날짜를 문자형으로 변환
+to_date(문자,'출력형식') = 문자를 날짜형으로 변환
+to_number('문자','출력형식') = 문자를 숫자형으로 변환
+alter session set nls_language=korean; => 요일을 한글로 사용할때 언어를 바꿔줘야함
+
+nvl(컬럼명,0) => 컬럼행에 null값이 있으면 0으로 바꿈
+nvl2(컬럼 또는 표현식, null값이 아니면 처리할 구문, null값이면 처리할 구문)
+DECODE(컬럼 또는 표현식,조건1,결과1,조건2,결과2,조건절 외 나머지결과)
+case when 조건식 then 결과 else 결과 end
+greatest(1,4,5) = > 매개변수로 표현식을 명시하고 가장큰 값을 반환
+least(1,4,5) = > 매개변수로 표현식을 명시하고 가장 작은 값을 반환
+
+그룹 함수
+sum = 그룹의 합계를 반환
+avg = 그룹의 평균을 반환
+max = 그룹의 최댓값을 반환
+min = 그룹의 최솟값을 반환
+count = 그룹의 총 개수를 반환
+group by rollup(그룹1,그룹2); =  그룹 1,2 의 합을 null로 표기해 더한값을 보여주고
+				마지막에 null/null로 총합을 보여준다 ex> 부서별 업무
+group by cube(그룹1,그룹2); = 그룹 1,2 의 합을 null로 표기해 더한값을 보여준다
+				그 후 그룹2를 기준으로 정렬을 해서 보여준다
+				마지막에 null/null로 총합을 보여준다 부서별 업무
+group by grouping sets(그룹1, 그룹2) = 그룹 1로 한번 정렬해서 보여주고
+				   그룹 2로 한번 정렬해서 보여준다
+
+grouping 함수는 행의 컬럼이 null이면 1, 아니면 0을 반환
+
+select goods
+from exp_goods_asia
+where country ='한국'
+union ------------------> 두개의 같은 select 컬럼명을 중복을 한번만 출력
+select goods
+from exp_goods_asia
+where country ='일본'; = 한국,일본의 같은 goods 은 한번만 출력
+
+union all ->중복도 표시하여 출력
+intersect -> 중복만 표시
+minus -> 중복을 제외한 결과만 출력
+
+select 다음에 오는 문자는  ' ' 로 사용하고 + 다음에는 숫자만 올 수 있다
+
+in => 쿼리 비교시 서브쿼리 결과중에 하나라도 일치하면 참
+all => 쿼리 비교시 검색 결과중 모든 값이 일치하면 참 (최대값을 구함)
+any => 쿼리 비교시 검색 결과중 값이 하나라도 일치하면 참 (최소값을 구함)
+
+테이블 생성
+create table 테이블명(
+칼럼명 형식 제약조건
+);
+형식 
+char() -> 고정된 공간을 잡아먹는 문자형
+varchar2() -> 입력한 만큼만 공간을 잡아먹는 문자형
+number() -> 숫자를 저장한다
+
+제약조건 constraint
+not null -> null을 허용 안함
+unique -> 중복을 허용 안함
+primary key -> null과 중복을 허용 안함
+foreign key -> 참조되는 테이블의 칼럼의 값이 존재하면 허용
+check -> 저장 가능한 데이터 값의 범위나 조건을 지정해 설정한 값만 허용
+
+데이터 딕셔너리 = 데이터베이스 자원을 효율적으로 관리하기 위한 다양한 정보를 저장하는 시스템 테이블
+DBA_xxxx -> 데이터베이스 관리자만 접근 가능한 객체 등의 정보 조회
+ALL_xxxx -> 자신 계정 소유 또는 권환을 부여 받은 객체등에 관한 정보 조회
+user_xxxx -> 자신의 계정이 소유한 객체 등에 관한 정보 조회
+
+deptno number(4) REFERENCES dept01(deptno) -> 
+deptno 칼 dept01테이블 deptno를 외래키를 참조한다
+gender varchar2(1) check (gender in('M','F')) ->
+칼럼 m,f 두개의 값만 저장가능
+
+cascade -> 연결된 키를 삭제할때 사용
+ex) disable primary key cascade; -> 기본키에 대한 제약 조건 비활성화
+ex) drop primary key cascade -> 기본키 삭제
+drop table student cascade CONSTRAINTS; -> student 테이블에 있는 키를 무시하고 삭제
+
+alter table 테이블명 -> 컬럼의 데이터 타입 수정
+alter table 테이블명 modify(컬럼명 자료형 제약조건) -> 컬럼의 타입,길이를 수정
+alter table 테이블명 rename column 이전컬럼명 to 새로운 컬럼명 -> 컬럼 이름 변경
+rename 테이블명 to 새로운테이블명 -> 테이블 이름 변경
+
+alter table 테이블명
+add 컬럼명 데이터타입 제약조건 -> 테이블 칼럼추가
+
+alter table 테이블명
+add constraint 칼럼명 primary key(칼럼명) -> 칼럼에 기본키를 넣음
+
+alter table 테이블명
+add(constraint 제약조건명 foreign key(컬럼명) references 참조할테이블명(컬럼명))
+-> 다른 테이블 칼럼 pk를 참조해 fk를 생성한다
+기본값 설정 = default 기본값
+
+create table 테이블명
+as
+select * from 참조할 테이블명 -> 참조한 테이블과 칼럼,값이 같은 새로운 테이블을 생성
+
+insert into 테이블명(칼럼1, 칼럼2) values(값1,값2) -> 테이블 칼럼에 값 넣기
+drop table 테이블명 -> 테이블 삭제
+delete from 테이블명 -> 테이블 값 삭제
+delete from 테이블명 where 조건식-> 조건에 맞는 테이블 값 삭제
+
+update 테이블명
+set 컬럼명 = 변경내용
+where 조건식; -> 조건식이 맞으면 컬럼에 값을 변경내용으로 변경한다
+
+update 테이블명
+set 컬럼명 = 변경내용 , 컬럼명 = 변경내용
+where 조건식; -> 여래개도 변경가능 
+
+ROLLBACK -> 삭제한걸 되돌림(commit으로 저장하거나 truncate로 삭제시 복구 불가)
+
+merge into 테이블명(c)
+using 값을 가져올 테이블(v)
+on(update될 조건)
+when matched then
+update set c.컬럼1 = v.컬럼1, c.컬럼2 = v.컬럼2 ...
+when not matched then
+insert (컬럼1,컬럼2...) values (값1,값2..) - > 두 테이블 컬럼값을 비교해 
+					빈자리는 채우고 없는값은 생성
+
+insert INTO 테이블명(컬럼1,컬럼2)
+select 가져올 테이블컬럼1,가져올 테이블컬럼2
+from 가져올 테이블명 -> 다른 테이블 값을 삽입
+
+트랜젝션 -> 데이터 처리에서 논리적으로 하나의 작업 단위를 의미
+
+create sequence 테이블명_seq
+start with n ->시작값
+increment by n -> 증가값
+minvalue n ->최소값
+maxvalue n -> 최대값
+nocycle ->최댓값을 넘기면 오류 발생 cycle은 처음부터 다시시작
+cache n; -> 오라클 서버가 미리 지정하고 메모리에 유지할 값 디폴트값은 2
+
+select sequence_name,min_value,max_value,increment_by,cycle_flag
+from user_sequences; -> user_sequences 데이터 딕셔너리로 시퀀스 정보 확인
+
+currval ->현재 값을 반환
+nextval -> 다음 시퀀스 값을 반환
+
+JDBC 드라이버		 	드라이버 클래스
+ JDK 기본(JDBC-ODBC 브리지) 	sun.jdbc.odbc.JdbcOdbcDriver
+Oracle Thin 			oracle.jdbc.driver.OracleDriver
+MySQL 				org.git.mm.mysql.Driver
+DB2 				com.ibm.db2.jdbc.app.DB2Driver
+MS-SQL				 com.microsoft.jdbc.sqlserver.SQLServerDriver
+Sybase 				com.sybase.jdbc.jdbc.SybDriver
+Informix 				com.informix.jdbc.IfxDriver
+
+JDBC 프로그래밍 절차 6단계
+1. jdbc 드라이버 로드  -> Class.forName("oracle.jdbc.driver.OracleDriver")
+2. 데이터베이스 연결   -> String URL ="jdbc:orcle:thin:@localhost:1521:orcl";
+			Connection con = DriverManager.getConnection(URL,"id","pw");
+3. sql을 위한 statement 객체 생성 -> Statement stmt = con.createStatement();
+4. sql 문장 실행
+5. 질의 결과 resultset 처리
+6. jdbc 객체 연결 해제 
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class ConnectDatabase {
+	public static Connection makeConnection() {
+		String url = "jdbc:oracle:thin:@192.168.0.43:1521:xe";
+		String id = "hr";
+		String password = "1234";
+		Connection con = null;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			System.out.println("드라이버 적재 성공");
+			con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "hr", "1234");
+			System.out.println("오라클 접속 성공");
+		} catch(ClassNotFoundException e) {
+			System.out.println("드라이버를 찾을 수 없습니다");
+		} catch(SQLException e) {
+			System.out.println("연결에 실패했습니다.");
+		}
+		return con;
+	}
+	
+	public static void main(String arg[]) throws SQLException{
+			Connection con = makeConnection();
+	}
+}
+
+where 조건부 with
+WITH CHECK OPTION -> 해당 컬럼 수정 불가
+WITH read only -> 테이블 수정 불가 
+
+rownum -> insert문에 의해 입력한 순서에 따라 1씩 증가되면서 값이 지정
+
+인라인뷰 -> from 절 내부에 사용된 서브 쿼리문
+
+프로시저 -> pl/sql을 통해 작업효율을 위해 만들어 사용 , 특정 로직을 처리하기만 하고 결과 값은 반환하지 않음
+
+LOOP
+처리문;
+EXIT when [조건];
+END LOOP;  = 루프 반복문
+
+WHILE 조건
+LOOP
+처리문;
+END LOOP; = 조건 루프 반복문
+
+FOR 증감변수 IN 초기값..최종값
+LOOP
+처리문;
+END LOOP;  = fo 루프 반복문
+
+create or replace procedure 프로시저 명
+(
+받을 값%type,rowtype ->  테이블명.컬럼명%type = 해당 테이블 컬럼의 데이터 타입을 가져옴 /
+			테이블 %rowtype = 해당 테이블에 들어있는 컬럼들을 전부 가져옴
+)
+is
+변수
+begin
+동작
+end;
+/
+execute 프로시저명(받을값); -> 프로시저 실행
+-----------------------------------------------------------------------------------------------
+
+객체지향 프로그래밍 = OOP
+
+자바 플랫폼은 JAVA API와 JVM으로 구성
+
+소스코드 컴파일 -> 바이트 코드
+바이트 코드 해석 실행하는 소프트웨어 자바가상머신 JVM
+
+JVM덕분에 여러 컴퓨터에 실행가능
+
+JDK(자바 개발 도구)->JRE(실행 프로그램)
+
+자바 api -> jdk에 포함된 클래스 라이브러리
+자바 패키지 -> 서로 관련된 클래스들을 분류하여 묶어 놓은 것
+
+c = 절차적 프로그래밍 / 함수 사용
+
+* 클래스 첫글자는 무조건 대문자, 뛰어쓰기 금지*  {} = 클래스블록(코드블록)
+클래스 안에는 매소드가 들어감(매소드 = 방법)
+
+main 메소드는 무조건 존재해야하며 꼭 하나만 있어야 한다.
+ex) public static void main()
+
+프로젝트 생성시 뛰어쓰기 _
+클래스는 하지않기
+
+변수 = 데이터 값들이 저장되는 공간
+자료형 = 변수에 저장되는 자료의 타입
+기초형 = 값을 다루는 자료형 (정수형, 실수형, 문자형, 논리형)
+참조형 = 주소를 다루는 자료형(클래스, 배열, 인터페이스)
+int = 정수형 float = 실수형 char = 문자형 boolean = 논리형(true false)
+
+변수 넣기
+int sum;
+int sum=0;
+
+아스키코드
+문자를 기억하는데 필요한 최소크기 8bit
+8bit = 1byte
+1024byte = 1kyte
+1024kbyte = 1mbyte
+1024mbyte = 1kbyte
+유니코드
+16bit = 2byte
+
+메모리주소 16진수
+
+메모리 할당 명령시 무조건 =을 기준으로 오른쪽에서 왼쪽으로 대입
+ex) int value = 3    valur <- 3  valur=메모리 주소를 가진 식별자
+식별자 첫 문자는 일반적인 문자이거나 _,$ 
+숫자는 불가능 공백 불가능 /  대 소문자 구별
+
+변수명, 메서드명 첫문자는 영어 소문자로 시작하되 다른 단어랑 연결할때 첫글자를 대문자
+ex) productName / product_name
+식별자 이름을 키워드(예약어)로 사용하면 안 된다
+
+클래스명 첫글자는 대문자
+
+정수형
+byte 8비트  기본값0
+short 16비트  기본값0
+int 32비트 기본값 0
+long 64비트  기본값0L
+
+실수형
+float 32비트 기본값0.0f 유효숫자 7
+double 64비트 기본값0.0d 유효숫자 15
+
+문자형
+char 16비트 기본값null
+
+논리형
+boolean 8비트 기본값false
+
+카멜 표기법 -> 변수에 사용 두번째 단어 첫글자 대문자
+파스칼 표기법 - 클래스에 사용 첫번째 두번째 단어 대문자
+스네이크 표기법 -> 단어사이 뛰어쓰기 _
+
+_____________________________________________________________
+8/5
+변수를 선언후 값을 넣어서 초기화(변수에 어떤 값이 있는지 모르기때문)
+정수를 실수로 변환하는걸 자동형변환 (32bit -> 64bit)
+문자형 변수 초기화는 무조건 작은 따음표 ' '
+
+스케너형 사용시 정수형과 문자형을 같이 사용할 경우 오류생기기 때문에 2개 선언
+ex)
+Scanner 변수 = new Scanner(System.in);
+변수.nextInt();
+
+--------------------------------------------------------------
+8/6
+삼항 연산자 = 조건식을 저장하여 true false 따라 결과를 출력함
+ex) int a = 8;  
+string k = (a==8) ? "8입니다" : "아닙니다"
+system.our.print(k);
+
+연산자 표기시 *=, %= 등등 =은 오른쪽에 들어감
+
+&& = and
+|| = or
+^ = not a
+
+원하는 소수점까지 표기하는 방법 %.2f => 소수점 2자리수까지 표기
+ex/ System.out.printf("%2.f",변수)
+---------------------------------------------------------------------
+8/9
+타입을 강제로 바꾸는걸 강제 형변환
+ex) int g = 23;  byte h = (byte)g
+
+--------------------------------------------------------------------
+8/10
+5에 4승 = Math.pow(5,4)
+
+--------------------------------------------------------------------
+8/11
+제어문 종류
+조건문 : if문, switch문
+반복문 : for문, while문, do-while문
+보조제어문 : break문, continue문, reture문
+
+if(식) {
+	문장1;
+	문장2;
+}
+else{
+문장3;
+}
+
+if 조건식은 boolean형태만 가능하다.
+
+if안에 추가적으로 조건식을 넣을때
+동일한 조건이면 else if
+다른 조건이면 if를 안에 넣어준다
+
+컨트롤 + 쉬프트 + f = 정리키
+
+if 비교할때 배열과 스트링은 문자열 저장칸을 비교하기 때문에
+==이 아니라 .equals로 비교해야한다
+ex) "홍길동".equals("홍길동")
+
+input.next().charAt(); -> char 형은 한글자만 저장할수있기에 뒤에 charAt();을 붙여줌
+변수.charAt(i) = 변수값의 i인덱스에 있는 값을 나타낸다
+-------------------------------------------------------------------------------------
+8/12
+if else문은 항상 두가지 선택지가 있을때만 사용
+선택지가 하나일 경우는 if문을 여러번 사용(겹쳐서 사용하는거 아님)
+ex) 
+if (조건식) {
+System.out.print("출력")
+}
+if (조건식2) {
+System.out.print("출력")
+}
+if (조건식1,2) {
+System.out.print("출력")
+}
+
+switch ~ case문
+ex)
+switch(식) {
+case 값1:
+실행부;
+break;
+
+case 값2:
+실행부;
+break;
+
+default:
+실행부;
+}
+정수, 문자, 문자열만 값으로로 사용가능 (수식, 변수는 사용할수없음)
+
+스케너로 값을  받고 싶을경우
+스케너변수를 넣어준다
+Scanner order
+swith(order)
+
+--------------------------------------------------------------------------
+Math.random() => 랜덤으로 임의의 값을 주는 함수
+ex) 
+(int)(Math.random()*45)+1; = 1부터~45까지 임의의 수
+
+소수점 자리수 표기하는 다른 방법
+152.1564 x 100 = 15215.64
+(int)15215.64 = 15215 / 100 = 152.15
+
+----------------------------------------------------------------------------
+for문
+for(초기값; 조건식; 증감식)
+{
+실행문
+}
+
+반복문은 2개까지만 겹치기 3개부터 큰일남
+
+코드블록이 없을경우 for문 바로 아래 들여쓰기 반복
+----------------------------------------------------------------------------
+while문
+횟수가 정해져 있는 경우 사용되는 for문과 다르게 while 문은 반복 횟수가 정해져
+있지 않고 조건이 주어진 경우 종료(boolean)
+while(조건식)
+{
+실행문
+}
+
+do while문
+while문과 동일하나 먼저 한번 코드블록을 실행후 조건 검사후 반복을 결정
+
+do
+{
+실행문
+}while(조건식)
+
+System.currentTimeMillis()/1000; // 밀리나노초를 초로 변경(변수는 long형 사용)
+시작과 끝 시간을 구할때 코드 맨위와 맨 아래 넣어줌
+
++= 연산자는 
+( 변수 += 1 )  = ( 변수 = 변수 + 1)
+
+------------------------------------------------------------------------------------
+alt + shift + r = 변수이름변경
+ 
+-----------------------------------------------------------------------------------
+
+배열이란 한 형식을 동일한 형의 자료들을 모아서 하나의 변수에 연속으로 저장하는
+자료의 집합체
+배열은 무조건 for문과 사용함
+
+배열
+자료형[] 배열명 = null;
+배열명 = new 자료형[크기];
+배열명[인덱스번호] = 값;
+
+자료형[] 배열명 = new 자료형[크기];
+ex)
+int[] num = null;
+num = new int[3]; // 방개수 3
+num[0] = 17; // 0 1 2 번방중 0번방에 17값을 넣어줌
+
+배열방에 선언과 동시에 값을 넣어주는 방법
+자료형[] 배열명 = {값,값,값}
+ex)
+int[] num = {1,2,3,};
+
+배열명.length = 배열의 크기를 알려줌
+for문 사용 예제
+for(int i = 0 ; i < 배열명.length ; i++)
+
+final int SIZE = 30; // final은 크기를 변경 못하게함 변수는 대문자로 사용
+
+	for(int a : numbers)
+		{
+			System.out.println(a);
+		}
+// 배열방을 0부터 다 읽어주는 소스 배열변수와 자료형 변수의 자료형이 같아야함
+
+return 변수; 함수를 종료할때 사용한다
+함수 = 은 값을 받을때 사용
+
+--------------------------------------------------------------------
+static void 변수명(Object ...args ) =변수를 바꿀 수 있는 가변 매개변수
+
+중복 정의(OverLoading) = 하나의 클레스에서 함수명이 동일한 매개변수의
+		         타입순서개수가 다른것
+
+선언하지 않은 메서드를 미리 호출하고 클릭하면 메서드가 생성됨
+
+--------------------------------------------------------------------------
+객체(object) = 상태(state) + 동작(behavior)
+
+public = 조건 없이 접근가능
+private = 같은 클래스에서만 사용
+(default) = 같은 패키지에서만 사용
+protected = 같은 패키지 또는 상속 관계에 사용
+
+class 필드는 public 사용금지
+메서드는 public
+
+위에서 내려오면서 구체화 되는 객체는 인스턴스
+인스턴스로 모이기 전에 객체를 클래스
+
+자바 클래스 다이어그램 설치
+help -> install new
+UML
+http://objectaid.com/update/current
+체크 인스톨  next next 동의
+-----------------------------------------------------------
+클레스 = 필드 + 메서드
+필드 또는 인스턴스 변수 = 클래스 안에서 선언되는 맴버 변수
+매개 변수 = 메소드 선언시()안에 선언되는 변수
+지역 변수 = 매소드 블록안에서 선언해서 사용하는 변수
+
+private 필드를 초기화 하기 위해서는 get/set메서드 사용해야함
+선언한 private 필드 아래에 우클릭 -> 소스 -> 제네레이터 겟/셋
+set = 필드의 값을 설정  get = 필드의 값을 반환
+ 
+클래스 다이어그램 : 시스템에서 사용되는 객체 타입을 정의하고 그들 간에
+존재하는 정적인 관계를 표현한 다이어그램
+
+use case 다이어그램 사용자 관점에서 sw시스템의 범위와 기능 정의하고
+시스템이 해야할 무엇을 작성하는 모델
+
+
+디폴트 생성자 = 필드를 생성하고 생성자를 만들지 않으면 자바가 알아서 
+실행할때 비어있는 생성자를 만듬
+
+생성자는 new 로 호출할때 딱한번사용
+
+소스창 우클릭-> 소스 -> 유징 필드 = 생성자 만들기
+소스창 우클릭-> 소스 -> 겟,셋 = 게터 세터 만들기
+소스창 우클릭-> 소스 -> 투스트링 = 출력창 만들기
+this. = 맴버(필드)를 호출
+this() = 클레스 안에 있는 같은 매개변수를 가지고있는 생성자를 호출, 코드블록 최상위에 있어야함
+
+java.util.date = 오늘 날짜 
+
+-----------------------------------------------------------------
+static = 클래스 안에서 값을 공유한다(클래스 변수,메서드)(정적 변수,메서드)
+로딩시 공간 할당을 시작하고 가장 마지막에 사라짐
+static 변수는 클래스당 하나만
+static 메서드는 클래스명.메서드명 으로 호출함
+변수에 사용시 변수명 모두 대문자
+
+Math.max =큰값을 찾아냄
+Math.min = 작은값을 찾아냄
+
+---------------------------------------------------------------------
+parent class = 부모 클래스
+child class = 자식 클래스
+extends 수퍼 클래스 이름을 적어서 상속
+class 자식클레스 extends 부모클레스
+
+생성자는 상속되지 않는다
+하위 클래스 생성자를 호출하면 상위클래스부터 호출
+상위 클래스 먼저 실행되고 하위 클래스 실행
+하위에서 상위 그 상위로 거슬러 올라가며 연속적으로 실행
+
+----------------------------------------------------------------------
+인터페이스는 implements 인터페이스명,인터페이스명 처럼 다중으로 호출가능
+인터페이스 필드는 public /static /fainal만 사용가능
+
+상위 클래스형 참조변수가 하위 클래스의 객체를 가르키도록 변환하는 것을 업캐스팅
+부모클래스 클래스명 = new 자식클래스생성자
+같은 클래스에서 같은 이름의 메서드를 선언하는걸 메서드 오버로딩
+상속받은 자식 클래스에서 부모 클래스에 정의된 메서드를 재정의 하는걸 메서드 오버라이딩
+
+instanceof = 객체가 특정 클래스로 부터 상속된 객체인지 확인 true/false
+참조변수 instanceof 클래스명
+
+enum 변수명
+{
+an ,bm ,cm 
+}
+
+클래스명.상수 형태로 값을 저장
+
+try{
+//예외가 있는 실행문
+}catch(예외 상황){
+//예외를 처리
+}finally{
+try에서 사용한 자원을 해제
+}
+
+try with resources = java se 9버전부터 finally없이 try 옆에 초기화할 자원을 선언
+try(초기화할 자원)
+
+throws문을 메서드 선언부에 선언해 호출한 곳으로 예외를 던질 수 있음
+
+throws IOException = 입출력 예외를 던짐
+throws FileNotFoundException = 파일을 못찾는 예외를 던짐
+throws FileNotFoundException , IOException  = 두 예외를 한번에 선언해 처리함
+Exception e = 모든 예외를 포함
+
+public class 클래스명 extands Exception{
+}  = 사용자 정의 예외
+
+public class 클래스명 extands Exception{
+	public 클래스명(){
+	super("음수는 허용하지 않습니다")
+	}
+}  = Exception 생성자가 호출되며 예외 메시지를 저장
+
+ex) if(time < 0){
+	throw new 클래스명();
+}
+
+메서드 선언부 = throws 클래스명
+try안에 선언 throw new 클래스명();
+
+int c = 0;
+while((c =입력 변수명.read()) != -1) {
+출력 변수명. write(c);
+}    = (입력 변수명) 값을 (출력 변수명)에 입력
+
+File dir  = new File("c:\\work");
+dir = mkdir(); = c에 work라는 폴더를 생성
+
+File file = new File(dir,"file1.txt");
+file.createNewFile(); = dir폴더에 file1.txt라는 파일를 생성
+
+ctrl + shift +O = 자동 import
+
+pakege 생성시 .을 붙이면 하위 폴더 생성
+ex ) a.b.c = a -> a.b -> a.b.c 폴더 생성
+
+import a.b.*; = a.b 폴더에 있는 모든 클래스를 사용한다
+import 하지 않고 사용하기 위해서는 선언시 패키지명까지 선언
+ex) a.b.B b = new a.b.B(); = a.b 폴더에 B클래스 를 b로 선언
+
+문자열 편집
+변수.concat("박찬영"); => 문자열 변수값에 박찬영 문자열 추가
+변수.replaceAll("박찬영","홍예주") => 박찬영 문자열을 홍예주로 변경
+toLowerCase() => 대문자를 소문자로
+toUpperCase() => 소문자를 대문자로
+변수.split(","); => ,을 기준으로 문자열을 String 배열로 반환
+변수.split(",",2); => ,을 기준으로 문자열을 String 배열로 반환하고 문자열 개수를 2개로 나눔
+변수.substring(i+1) => i+1문자열을 시작으로 문자열을 불러옴
+변수.substring(0,i) => 0문자열을 시작으로 i-1까지 문자열을 불러옴
+String.valueOf(변수값) = > 변수값을 String 형으로 변환
+
+StringBuilder 타입 
+append() => 매개변수로 전달받은 값을 추가
+insert(8, 아아) = > 전달받은 위치(8)에 매개변수(아아)를 추가 
+
+변수.trim() 변수 앞뒤로 있는 공백을 제거
+isEmpty() = null문자열인지 확인
+
+변수.indexOf(검색) - > indexOf안에 문자열 값을 앞에서 부터 찾음
+변수.lastIndexOf(검색) - > indexOf안에 문자열 값을 끝에서 부터 찾음
+변수.startsWith(서울시) - > 변수의 문자열의 시작하는 값이 startsWith안에 문자열 값과 같으면 true
+변수.endsWith(서울시) - > 변수의 문자열의 마지막 값이 endsWith안에 문자열 값과 같으면 true
+
+if(배열[i].indexOf(서울시) != -1)        =>   배열[i]에 문자열에 서울시가 없을 경우
+syso(배열[i])                             =>   배열[i] 출력
+
+Array 클래스
+Arrays.sort(배열) = > 배열의 모든 요소를 오름차순으로 정렬
+
+Date, Calendar 클래스
+Data now = new Date(); => now는 현재 날짜 시간
+Calendar now = Calendar.getInstance(); => now현재 날짜 시간
+TimeZone timeZon = TimeZone.getTimeZone("America/Los_Angeles");
+Calendar now = Calendar.getInstance(timeZon); = > 미국 로스엔젤리스 시간
+
+정규표현식 = 문자열을 찾기 위한 조건을 문자열로 표현한 것
+
+[] => 한개의 문자
+() => 그룹지정
+* => 0번이상
++ => 1번이상
+? => 0번 혹은 1번
+{n} => n번
+{n,} => n번 이상
+{n,m} => n번 이상 m번 이하
+
+a-z => a~z모든 소문자
+A-Z => A~Z모든 대문자
+0~9 => 0~9사이의 숫자
+-------------------------------
+\d => 숫자
+\w => 문자 또는 숫자
+\s => 공백
+
+대문자는 반대
+ex) \D => 숫자가 아님
+-------------------------------
+ex) 01[0-9]-\\d{3,4}-\\d{4} = > 01숫자0~9 - 숫자 3자리 또는 4자리 - 숫자 4자리
+     [a-zA-Z]+(['-][a-zA-z]+)* => 영어대소문자 한번이상 (',-로 시작하고 영어대소문자 한번이상)을 0번이상
+
+쓰레드가 실행하는 모든 작업은 run() 메소드 안에 있어야함
+public void run()
+{
+}
+클래스명 extends Thread 했을 경우
+start()메소드를 호출해야 스레드가 실행됨
+쓰래드 변수명 = new 쓰레드 상속받은 클레스();
+변수명.strart();
+
+클래스명 implements Runnable 했을 경우
+인터페이스를 받은 클래스 변수명 = new 클래스();
+Thread 변수명 = new Thread(클래스변수명);
+변수명.start();
+
+void setPriority(int newPriority) => 현재 스레드의 우선순위 변경
+getPriority() : 현재 스레드의 우선순위를 반환한다
+
+New(생성) -> start() -> Runnable(Ready) -> run() -> Running -> run() 종료 -> Exit
+
+sleep(int); => 스레드를 밀리 세컨드(1/1000)초 동안 멈춤
+
+wait(), notify(), notifyAll()
+두 개의 스레드가 교대로 번갈아 가며 실행해야 할 경우 주로 사용
+공유자원이 참조될 수 있는 코드의 범위를 = 임계영역
+
+wait()
+• 다른 스레드가 notify()를 불러줄 때까지 기다린다.
+notify()
+• wait()를 호출하여 대기중인 스레드를 깨우고 RUNNABLE 상태로
+만든다.
+• 2개 이상의 스레드가 대기중이라도 오직 한 스레드만 깨운다.
+notifyAll()
+• wait()를 호출하여 대기중인 모든 스레드를 깨우고 모두
+RUNNABLE 상태로 만든다.
+
+블록 동기화 : synchronized(객체명) { }
+메서드 동기화 : synchronized 메서드명() { }
+
+@FunctionalInterface => 인터페이스에서 하나의 추상 메서드만 존재하게 만듬
+람다식 사용할때 필요
+람다식을 한줄로 끝낼때는 코드블록이 필요없지만 두줄이상(retrun 값을 받는 경우)일때
+{}를 사용 한다
+
+객체가 큰지 작은지 비교할때 compareTo 사용
+(변수1.compareTo(변수2))
+기준 값과 비교대상이 동일한 값일 경우 0
+기준 값이 비교대상 보다 작은 경우 -1
+기준 값이 비교대상 보다 큰 경우 1 반환
+
+제네릭 클래스 또는 인터페이스의 배열을 허용하지 않음
+
+ArrayList
+list.add("아니") => 빈배열에 문자열 추가
+list.add(2, "그래") => 2번방에 문자열 추가하고 다른 문자열 뒤로 밀음
+list.remove(3) => 3번방 값을 지우고 뒤에 배열을 당겨옴
+list.add(new Integer(45)); => 숫자값을 넣을때는 인티저를 넣어줘야함
+set 을 사용하면 덮어씀
+
+Iterator 인터페이스
+Iterator<String> iter = list.iterator();
+while(iter.hasNext()){   //다음값이 있으면 반복
+	syso(iter.next()); //다음값을 출력
+}
+
+Vector 클래스
+Vector 클래스는 ArrayList 와 동일하지만 동시사용이 가능하고 동기화 할때 사용
+
+LinkedList 클래스
+LinkedList는 ArrayList처럼 순서대로 저장하지않고 메모리를 저장할 공간이 있으면
+위치 상관없이 저장
+메모리 효율면에서 연속적인 공간이 필요없어 ArrayList보다 좋고
+검색면에서는 차례대로 접근 가능한 ArrayList보다 안 좋다
+데이터와 다음데이터링크를 가지고있는 단위 = 노드
+
+데이터베이스 = 조직에 필요한 정보를 얻기 위해 논리적으로 연관된 데이터를 모아
+	        구조적으로 통합해 놓은 것
+데이터베이스 특징 : 

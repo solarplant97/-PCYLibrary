@@ -1,0 +1,131 @@
+192.168.35.205
+192.168.0.17
+
+메일 보내기
+pom.xml
+
+   - java에서 메일을 보내기 위해 필요로한 라이브러리입니다.
+   - 실제 전송되는 메일 객체를 가집니다.
+   - 주요 클래스로 Session, Message, Address, Authenticator, Tranport 등이 잇습니다.
+ <dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>1.4.7</version>
+</dependency>
+
+// JavaMailSender 인터페이스(JavaMailSenderImpl)를 사용하기 위해 필요
+ mail 라이브러리를 일일이 세팅을 할 필요 없이 몇 가지의 
+설정(MailSender Bean설정)만으로도 사용될 수 있도록 도와줍니다.
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-context-support</artifactId>
+    <version>${org.springframework-version}</version>
+</dependency>
+
+추가
+
+root-context.xml
+
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+ <property name="host" value="stmp 도메인 주소"/> 
+</bean>
+
+<!-- gmail설정 -->
+<bean id="mailSender2" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+     <property name="host" value="smtp.gmail.com" />
+     <property name="port" value="587" />
+ <property name="username" value="your_email"/> <!-- 자신의 이메일 아이디 -->
+ <property name="password" value="your_password!"/> <!-- 자신의 비밀번호 -->
+ <!-- 보안연결 TLS과 관련된 설정 -->
+     <property name="javaMailProperties">
+    <props>
+       <prop key="mail.smtp.auth">true</prop>
+       <prop key="mail.smtp.starttls.enable">true</prop>
+    </props>
+     </property>
+</bean>
+
+<!-- navermail설정 -->
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+ <property name="host" value="smtp.naver.com"/> <!-- 메이서버 호스트 -->
+ <property name="port" value="465"/> <!-- 메이서버 포트번호 -->
+ <property name="username" value="your_email"/> <!-- 자신의 이메일 아이디 -->
+ <property name="password" value="your_password"/> <!-- 자신의 비밀번호 -->
+   <!-- 보안연결 SSL과 관련된 설정 -->
+ <property name="javaMailProperties">
+  <props>
+  <prop key="mail.smtp.auth">true</prop>
+  <prop key="mail.smtp.starttls.enable">true</prop>
+  <prop key="mail.smtps.checkserveridentity">true</prop>
+  <prop key="mail.smtps.ssl.trust">*</prop>
+  <prop key="mail.debug">true</prop>
+  <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+  </props>
+ </property>
+</bean>
+
+<!-- navermail설정 -->
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+ <property name="host" value="smtp.naver.com"/> <!-- 메이서버 호스트 -->
+ <property name="port" value="465"/> <!-- 메이서버 포트번호 -->
+ <property name="username" value="your_email"/> <!-- 자신의 이메일 아이디 -->
+ <property name="password" value="your_password"/> <!-- 자신의 비밀번호 -->
+   <!-- 보안연결 SSL과 관련된 설정 -->
+ <property name="javaMailProperties">
+  <props>
+  <prop key="mail.smtp.auth">true</prop>
+  <prop key="mail.smtp.starttls.enable">true</prop>
+  <prop key="mail.smtps.checkserveridentity">true</prop>
+  <prop key="mail.smtps.ssl.trust">*</prop>
+  <prop key="mail.debug">true</prop>
+  <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+  </props>
+ </property>
+</bean>
+
+중 하나 추가
+
+컨트롤러
+
+빈에 설정한 mailSender를 사용하기위해 선언
+@Autowired
+private JavaMailSender mailSender; 
+
+@RequestMapping(value = "/sendMail", method = RequestMethod.GET)
+    public void sendMailTest() throws Exception{
+        
+        String subject = "test 메일";
+        String content = "메일 테스트 내용";
+        String from = "보내는이 아이디@도메인주소";
+        String to = "받는이 아이디@도메인주소";
+        
+        try {
+            MimeMessage mail = mailSender.createMimeMessage();
+            MimeMessageHelper mailHelper = new MimeMessageHelper(mail,true,"UTF-8");
+            // true는 멀티파트 메세지를 사용하겠다는 의미
+            
+            /*
+             * 단순한 텍스트 메세지만 사용시엔 아래의 코드도 사용 가능 
+             * MimeMessageHelper mailHelper = new MimeMessageHelper(mail,"UTF-8");
+             */
+            
+            mailHelper.setFrom(from);
+            // 빈에 아이디 설정한 것은 단순히 smtp 인증을 받기 위해 사용 따라서 보내는이(setFrom())반드시 필요
+            // 보내는이와 메일주소를 수신하는이가 볼때 모두 표기 되게 원하신다면 아래의 코드를 사용하시면 됩니다.
+            //mailHelper.setFrom("보내는이 이름 <보내는이 아이디@도메인주소>");
+            mailHelper.setTo(to);
+            mailHelper.setSubject(subject);
+            mailHelper.setText(content, true);
+            // true는 html을 사용하겠다는 의미입니다.
+            
+            /*
+             * 단순한 텍스트만 사용하신다면 다음의 코드를 사용하셔도 됩니다. mailHelper.setText(content);
+             */
+            
+            mailSender.send(mail);
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        
+    }

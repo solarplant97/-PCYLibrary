@@ -1,0 +1,84 @@
+파일 업로드 구현
+pom.xml
+		<!-- 파일 업로드 관련 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.9</version>
+		</dependency>
+		
+		<!-- 이미지 업로드 -->
+		<!-- https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib-->		
+		<dependency>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
+		</dependency>
+
+		<!-- 파일 업로드 다운로드 -->
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+
+servlet-context.xml
+	파일 최대크기, 인코딩 설정
+	<beans:bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
+		<beans:property name="defaultEncoding" value="UTF-8"/>
+		<beans:property name="maxUploadSize" value="5242880"/>
+	</beans:bean>
+
+
+컨트롤러
+	
+	처리할 매서드에 @RequestPart(value = "file") MultipartFile file로 파일을 받아서 사용
+	@RequestMapping(value = "/roomAdd", method = RequestMethod.POST) // 케이지 등록
+	public String roomAdd(CageRoomVO cvo,ExtraServiceVO svo,@RequestPart(value = "file") MultipartFile file,
+			HttpServletRequest request) throws IllegalStateException, IOException {
+	
+	c_file에 FileUploadUtil 클레스의 fileUpload 메서드로 위에서 받은 file, request, 저장할 폴더명을 보내주고 파일명을 받아옴
+	String c_file = FileUploadUtil.fileUpload(file, request, "roomImages");
+		cvo.setC_picture(c_file);
+
+
+파일업로드 유틸
+	업로드 페스를 따로 지정해주고 저장할때 사용
+	public class FileUploadUtil {
+	private static Logger log = LoggerFactory.getLogger(FileUploadUtil.class);
+	private static final String UPLOAD_PATH = "C:\\PuppyPlaytimeRepository\\";
+	
+	스트링으로 값을 받아 폴더를 만드는 메서드(이미 존재하면 만들지않음)
+	private static void makeDir(String docRoot) {
+		File fileDir = new File(docRoot);
+		if(fileDir.exists()) {
+			return;
+		}
+		fileDir.mkdirs();
+	}
+	
+	public static String fileUpload(MultipartFile file, HttpServletRequest request, String path) throws IOException{
+	log.info("fileUpload 호출 성공");
+		String real_name=null;
+		String org_name = file.getOriginalFilename();
+		log.info("org_name : "+org_name);
+		
+		if(org_name!=null&&(!org_name.equals(""))) {
+			real_name = System.currentTimeMillis()+"_"+org_name;
+			
+			String docRoot = request.getSession().getServletContext().getRealPath("/");
+			makeDir(docRoot);
+			
+			File fileAdd = new File(UPLOAD_PATH+path,real_name);
+			log.info("업로드할 파일(fileAdd):"+fileAdd);
+			
+			file.transferTo(fileAdd);	
+		}
+		return real_name;
+	}
+}
+
+
+JSP
+<td colspan ="3"><input type="file" id="file" name="file"/></td> 파일을 입력받음

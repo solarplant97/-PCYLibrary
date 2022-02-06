@@ -1,0 +1,18 @@
+https://www.oracle.com/index.html
+http://openjdk.java.net/
+http://www.oracle.com/downloads
+
+자바 설치
+C에 Javaproject 폴더생성
+자바 jdk-11 압축풀기
+들어가서 bin 들어간 후 주소 복사
+내 pc 설정 -> 고급 시스템 설정 -> 환경변수 -> 시스템변수 -> path -> 주소 추가 저장
+이클립스 설치
+Javaproject에 workspace 폴더 생성
+이클립스 압출 풀고 workspace로 이동
+이클립스 설정
+Flie -> new -> 자바프로젝트 -> javase -11 / public static void main 체크
+
+폰트 설정
+window -> preferences -> general -> appearanse -> coler .. -> Text Font 어플라이
+window -> preferences -> warkspace -> text file encoding(other : utf-8)

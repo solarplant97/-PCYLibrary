@@ -1,0 +1,8 @@
+http://www.oracle.com/index.html
+
+support - > Software Downloads - > Database
+Database Enterprise/Standard Editions
+Oracle Database Express Edition
+
+support - > Software Downloads - > Developer Tools -> SQL Developer
+Windows 64-bit with JDK 8 included
